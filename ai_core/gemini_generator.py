@@ -29,8 +29,8 @@ print("=" * 50)
 
 
 def generate_document(document_type, parties, terms, effective_date):
-    prompt = f"""
-Generate a professional {document_type}.
+    return f"""
+{document_type}
 
 Parties:
 {parties}
@@ -41,24 +41,11 @@ Terms:
 Effective Date:
 {effective_date}
 
-Include:
-- Title
-- Introduction
-- Legal Clauses
-- Signature Section
+This is a sample legal document generated for demonstration purposes.
+
+Signatures:
+
+Party 1: ___________________
+
+Party 2: ___________________
 """
-
-    try:
-        response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL"),
-            contents=prompt,
-        )
-
-        print(response)
-
-        return response.text
-
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return f"Error: {e}"
