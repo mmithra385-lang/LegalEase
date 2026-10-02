@@ -12,7 +12,7 @@ BACKEND_URL = "https://legalease-production-48e4.up.railway.app"
 st.set_page_config(page_title="LegalEase AI", page_icon="⚖️")
 
 st.title("⚖️ LegalEase AI")
-st.write("Generate professional legal documents using AI.")
+st.write("Generate, Edit and Download Professional Legal Documents using AI.")
 
 # ==========================
 # User Inputs
@@ -59,18 +59,23 @@ if st.button("Generate Document"):
 
             st.success("✅ Document Generated Successfully!")
 
-            st.text_area(
-                "Generated Document",
-                result["document"],
-                height=400
+            # ==========================
+            # Editable Document
+            # ==========================
+            edited_document = st.text_area(
+                "✏️ Edit Document",
+                value=result["document"],
+                height=450
             )
+
+            st.info("You can edit the generated document before downloading.")
 
             # ==========================
             # TXT Download
             # ==========================
             st.download_button(
                 label="📄 Download TXT",
-                data=result["document"],
+                data=edited_document,
                 file_name="LegalEase_Document.txt",
                 mime="text/plain"
             )
@@ -82,7 +87,7 @@ if st.button("Generate Document"):
             pdf.add_page()
             pdf.set_font("Arial", size=12)
 
-            for line in result["document"].split("\n"):
+            for line in edited_document.split("\n"):
                 pdf.multi_cell(0, 10, line)
 
             pdf_bytes = pdf.output(dest="S").encode("latin-1")
@@ -100,7 +105,7 @@ if st.button("Generate Document"):
             doc = Document()
 
             doc.add_heading("LegalEase AI", level=1)
-            doc.add_paragraph(result["document"])
+            doc.add_paragraph(edited_document)
 
             buffer = BytesIO()
 
